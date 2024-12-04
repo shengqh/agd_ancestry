@@ -171,9 +171,9 @@ workflow agd_ancestry_workflow{
 
         call ProjectPCA{
             input: 
-                pgen_file = MergePgenFilesForPCA.output_pgen_file, 
-                pvar_file = MergePgenFilesForPCA.output_pvar_file,
-                psam_file = MergePgenFilesForPCA.output_psam_file,  
+                pgen_file = MergePgenFilesForPCA.output_pgen, 
+                pvar_file = MergePgenFilesForPCA.output_pvar,
+                psam_file = MergePgenFilesForPCA.output_psam,  
                 PCA_loadings = pca_loadings_file,
                 PCA_AF = pca_af_file,
                 OUTNAME = target_prefix
