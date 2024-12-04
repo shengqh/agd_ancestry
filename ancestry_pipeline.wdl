@@ -166,7 +166,7 @@ workflow agd_ancestry_workflow{
                 pgen_files = ExtractVariants.extract_variants_output_pgen_file,
                 pvar_files = ExtractVariants.extract_variants_output_pvar_file,
                 psam_files = ExtractVariants.extract_variants_output_psam_file,
-                target_prefix = target_prefix
+                output_prefix = target_prefix
         }
 
         call ProjectPCA{
@@ -232,7 +232,7 @@ workflow agd_ancestry_workflow{
                 pgen_files = PreparePlink.prepare_plink_unsupervised_output_pgen_file,
                 pvar_files = PreparePlink.prepare_plink_unsupervised_output_pvar_file,
                 psam_files = PreparePlink.prepare_plink_unsupervised_output_psam_file,
-                target_prefix = target_prefix
+                output_prefix = target_prefix
         }
 
         call ConvertPgenToBed as ConvertPgenToBedForScope{
