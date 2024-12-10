@@ -97,9 +97,31 @@ workflow agd_ancestry_workflow{
 
     # If the user chose to use an external spike in, then first the spike-in data must be merged with the original data, and then the pipeline can proceed 
     if(external_spike_in){
-        Array[File] source_bed_files_required=select_first([source_bed_files])
-        Array[File] source_bim_files_required=select_first([source_bim_files])
-        Array[File] source_fam_files_required=select_first([source_fam_files])
+        if(!defined(source_bed_files)){
+            scatter (idx in range(length(chromosomes))) {
+                String chromosome_for_spike_in = chromosomes[idx]
+                File pgen_file_for_conversion = source_pgen_files[idx]
+                File pvar_file_for_conversion = source_pvar_files[idx]
+                File psam_file_for_conversion = source_psam_files[idx]
+
+                call ConvertPgenToBed as ConvertPgenToBedForSpikeIn{
+                    input:
+                        pgen = pgen_file_for_conversion,
+                        pvar = pvar_file_for_conversion,
+                        psam = psam_file_for_conversion, 
+                        out_string = chromosome_for_spike_in
+                }
+            }
+
+            Array[File] source_bed_files_required=select_first([ConvertPgenToBedForSpikeIn.convert_Pgen_out_bed])
+            Array[File] source_bim_files_required=select_first([ConvertPgenToBedForSpikeIn.convert_Pgen_out_bim])
+            Array[File] source_fam_files_required=select_first([ConvertPgenToBedForSpikeIn.convert_Pgen_out_fam])
+        }
+        if(defined(source_bed_files)){
+            Array[File] source_bed_files_required=select_first([source_bed_files])
+            Array[File] source_bim_files_required=select_first([source_bim_files])
+            Array[File] source_fam_files_required=select_first([source_fam_files])
+        }
          scatter (idx in range(length(chromosomes))) {
             String chromosome_for_spike_in = chromosomes[idx]
             File bed_file_for_spike_in = source_bed_files_required[idx]
