@@ -97,10 +97,6 @@ workflow agd_ancestry_workflow{
 
     # If the user chose to use an external spike in, then first the spike-in data must be merged with the original data, and then the pipeline can proceed 
     if(external_spike_in){
-        Array[File] source_bed_files_required
-        Array[File] source_bim_files_required
-        Array[File] source_fam_files_required
-
         if(!defined(source_bed_files)){
             scatter (idx in range(length(chromosomes))) {
                 String chromosome_for_spike_in_conversion = chromosomes[idx]
@@ -116,14 +112,11 @@ workflow agd_ancestry_workflow{
                         out_prefix = chromosome_for_spike_in
                 }
             }
-            source_bed_files_required = ConvertPgenToBedForSpikeIn.convert_Pgen_out_bed
-            source_bim_files_required = ConvertPgenToBedForSpikeIn.convert_Pgen_out_bim
-            source_fam_files_required = ConvertPgenToBedForSpikeIn.convert_Pgen_out_fam
-         } else {
-            source_bed_files_required=select_first([source_bed_files])
-            source_bim_files_required=select_first([source_bim_files])
-            source_fam_files_required=select_first([source_fam_files])
-         }
+         } 
+        Array[File] source_bed_files_required=select_first([source_bed_files, ConvertPgenToBedForSpikeIn.convert_Pgen_out_bed])
+        Array[File] source_bim_files_required=select_first([source_bim_files, ConvertPgenToBedForSpikeIn.convert_Pgen_out_bim])
+        Array[File] source_fam_files_required=select_first([source_fam_files, ConvertPgenToBedForSpikeIn.convert_Pgen_out_bim])
+
          scatter (idx in range(length(chromosomes))) {
             String chromosome_for_spike_in = chromosomes[idx]
             File bed_file_for_spike_in = source_bed_files_required[idx]
