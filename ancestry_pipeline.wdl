@@ -43,9 +43,6 @@ workflow agd_ancestry_workflow{
 
         # optional inputs for spike in data - required if merging spike in data 
 
-        Array[File]? source_bed_files
-        Array[File]? source_bim_files
-        Array[File]? source_fam_files
         File? spike_in_pgen_file
         File? spike_in_pvar_file
         File? spike_in_psam_file
@@ -98,30 +95,19 @@ workflow agd_ancestry_workflow{
     # If the user chose to use an external spike in, then first the spike-in data must be merged with the original data, and then the pipeline can proceed 
     if(external_spike_in){
 
-        Array[File] source_bed_files_required=select_first([source_bed_files, ConvertPgenToBedForSpikeIn.convert_Pgen_out_bed])
-        Array[File] source_bim_files_required=select_first([source_bim_files, ConvertPgenToBedForSpikeIn.convert_Pgen_out_bim])
-        Array[File] source_fam_files_required=select_first([source_fam_files, ConvertPgenToBedForSpikeIn.convert_Pgen_out_fam])
-
         scatter (idx in range(length(chromosomes))) {
-            String chromosome_for_spike_in_conversion = chromosomes[idx]
-            File pgen_file_for_conversion = source_pgen_files[idx]
-            File pvar_file_for_conversion = source_pvar_files[idx]
-            File psam_file_for_conversion = source_psam_files[idx]
+            String chromosome_for_spike_in = chromosomes[idx]
+            File agd_pgen_file_for_spike_in = source_pgen_files[idx]
+            File agd_pvar_file_for_spike_in = source_pvar_files[idx]
+            File agd_psam_file_for_spike_in = source_psam_files[idx]
 
             call ConvertPgenToBed as ConvertPgenToBedForSpikeIn{
                 input:
-                    pgen = pgen_file_for_conversion,
-                    pvar = pvar_file_for_conversion,
-                    psam = psam_file_for_conversion, 
+                    pgen = agd_pgen_file_for_spike_in,
+                    pvar = agd_pvar_file_for_spike_in,
+                    psam = agd_psam_file_for_spike_in, 
                     out_prefix = chromosome_for_spike_in
             }
-        } 
-
-        scatter (idx in range(length(chromosomes))) {
-            String chromosome_for_spike_in = chromosomes[idx]
-            File bed_file_for_spike_in = source_bed_files_required[idx]
-            File bim_file_for_spike_in = source_bim_files_required[idx]
-            File fam_file_for_spike_in = source_fam_files_required[idx]
 
             call SubsetChromosomeTGP{
                 input: 
@@ -134,9 +120,9 @@ workflow agd_ancestry_workflow{
 
             call Merge1000genomesAGD {
                 input:
-                    agd_bed_file = bed_file_for_spike_in,
-                    agd_bim_file = bim_file_for_spike_in,
-                    agd_fam_file = fam_file_for_spike_in,
+                    agd_bed_file = ConvertPgenToBedForSpikeIn.convert_Pgen_out_bed,
+                    agd_bim_file = ConvertPgenToBedForSpikeIn.convert_Pgen_out_bim,
+                    agd_fam_file = ConvertPgenToBedForSpikeIn.convert_Pgen_out_fam,
                     TGP_bed_file = SubsetChromosomeTGP.subset_reference_out_bed_file,
                     TGP_bim_file = SubsetChromosomeTGP.subset_reference_out_bim_file,
                     TGP_fam_file = SubsetChromosomeTGP.subset_reference_out_fam_file,
