@@ -109,7 +109,7 @@ workflow agd_ancestry_workflow{
                         pgen = pgen_file_for_conversion,
                         pvar = pvar_file_for_conversion,
                         psam = psam_file_for_conversion, 
-                        out_string = chromosome_for_spike_in
+                        out_prefix = chromosome_for_spike_in
                 }
             }
         }
