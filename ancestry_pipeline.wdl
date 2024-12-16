@@ -422,7 +422,7 @@ task ConvertPgenToBed{
         Int? memory_gb = 20
     }
 
-    Int disk_size = ceil(size([pgen, pvar, psam], "GB"))*32 + 20
+    Int disk_size = ceil(size([pgen, pvar, psam], "GB"))*42 + 20
 
 
     String out_string = if defined(out_prefix) then out_prefix else basename(pgen, ".pgen")
