@@ -107,6 +107,8 @@ workflow agd_ancestry_workflow{
                     pvar = agd_pvar_file_for_spike_in,
                     psam = agd_psam_file_for_spike_in, 
                     out_prefix = chromosome_for_spike_in
+                    disk_size_multiplier = 32
+                    disk_size_addition = 300
             }
 
             call SubsetChromosomeTGP{
@@ -420,10 +422,12 @@ task ConvertPgenToBed{
         String? out_prefix
 
         Int? memory_gb = 20
+
+        Int? disk_size_multiplier = 4
+        Int? disk_size_addition = 20
     }
 
-    Int disk_size = ceil(size([pgen, pvar, psam], "GB"))*32 + 300
-
+    Int disk_size = ceil(size([pgen, pvar, psam], "GB"))*disk_size_multiplier + disk_size_addition
 
     String out_string = if defined(out_prefix) then out_prefix else basename(pgen, ".pgen")
 
