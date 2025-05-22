@@ -106,9 +106,7 @@ workflow agd_ancestry_workflow{
                     pgen = agd_pgen_file_for_spike_in,
                     pvar = agd_pvar_file_for_spike_in,
                     psam = agd_psam_file_for_spike_in, 
-                    out_prefix = chromosome_for_spike_in,
-                    disk_size_multiplier = 32,
-                    disk_size_addition = 300
+                    out_prefix = chromosome_for_spike_in
             }
 
             call SubsetChromosomeTGP{
