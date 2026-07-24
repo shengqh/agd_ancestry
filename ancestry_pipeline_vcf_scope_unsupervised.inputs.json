@@ -1,0 +1,6 @@
+{
+  "ancestry_pipeline_vcf_scope_unsupervised.scope_long_range_ld_file": "/nobackup/h_cqs/jstolze/AWilliams/VCFs/high-LD-regions-hg38-GRCh38.txt",
+  "ancestry_pipeline_vcf_scope_unsupervised.input_vcf": "/nobackup/h_cqs/jstolze/AWilliams/VCFs/first_round.vcf.gz",
+  "ancestry_pipeline_vcf_scope_unsupervised.output_prefix": "first_round"
+}
+
