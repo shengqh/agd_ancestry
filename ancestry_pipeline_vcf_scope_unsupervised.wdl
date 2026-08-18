@@ -284,6 +284,8 @@ plink2 \
     --make-bed \
     --out ~{output_prefix}
 
+rm -f plink2.prune.in plink2.prune.out
+
 >>>
 
     runtime {
