@@ -1,6 +1,9 @@
 {
   "ancestry_pipeline_vcf_scope_unsupervised.scope_long_range_ld_file": "/nobackup/h_cqs/jstolze/AWilliams/VCFs/high-LD-regions-hg38-GRCh38.txt",
   "ancestry_pipeline_vcf_scope_unsupervised.input_vcf": "/nobackup/h_cqs/jstolze/AWilliams/VCFs/first_round.vcf.gz",
+  "ancestry_pipeline_vcf_scope_unsupervised.spike_in_pgen": "/data/cqs/references/1000g/all_hg38.pgen",
+  "ancestry_pipeline_vcf_scope_unsupervised.spike_in_pvar": "/data/cqs/references/1000g/all_hg38.slim.pvar",
+  "ancestry_pipeline_vcf_scope_unsupervised.spike_in_psam": "/data/cqs/references/1000g/all_hg38.psam",
+  "ancestry_pipeline_vcf_scope_unsupervised.spike_in_relatives_exclude": "/data/cqs/references/1000g/deg2_hg38.king.cutoff.out.id",
   "ancestry_pipeline_vcf_scope_unsupervised.output_prefix": "first_round"
 }
-
